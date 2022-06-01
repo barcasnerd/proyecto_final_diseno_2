@@ -1,2 +1,2 @@
-# proyecto_final_dise-o
+# Proyecto Final Diseño de Software II
 Pasarela de Pagos
