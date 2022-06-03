@@ -1,0 +1,40 @@
+version: '3.3'
+
+services:
+    api:
+        image: delete
+        #ports:
+            #-   3500:5000
+        env_file:
+            -   environmentVars/.social.env
+        depends_on:
+            -   postgres
+
+    node2:
+        image: delete2
+        container_name: node2
+        ports:
+            -   "3500:5000"
+        env_file:
+            - environmentVars/.social.env
+        depends_on:
+            - postgres
+
+    nginx:
+        image: nginx:latest
+        volumes:
+            -   ./conf.d:/etc/nginx/conf.d
+        depends_on:
+            -   api
+        ports:
+            -   '3000:3000'
+    postgres:
+        image: postgres
+        restart: always
+        container_name: postgres
+        ports:
+            - "5432:5432"
+        environment:
+            - POSTGRES_USER=root
+            - POSTGRES_PASSWORD=root
+            - POSTGRES_DB=root
