@@ -4,6 +4,8 @@ import {CardEntity} from "../../../entities/card.entity";
 import {Card, CardFranchiseEnum, CardTypeEnum} from "../../../../../../entities/models/card.model.entity";
 import {TransactionEntity} from "../../../entities/transaction.entity";
 import {Transaction, TransactionStatusEnum} from "../../../../../../entities/models/transaction.entity";
+import {PaymentEntity} from "../../../entities/payment.entity";
+import {Payment, PaymentLocationEnum} from "../../../../../../entities/models/payment.model.entity";
 
 export function bankEntityToDomainBank(bankEntity: BankEntity): Bank {
     return {
@@ -47,5 +49,26 @@ export function transactionEntityToDomainTransaction(transactionEntity: Transact
         createDate: transactionEntity.createDate,
         updateDate: transactionEntity.updateDate,
         deleteDate: transactionEntity.deleteDate
+    }
+}
+
+export function paymentEntityToDomainPayment(paymentEntity: PaymentEntity): Payment {
+    return {
+        id: paymentEntity.id,
+        transactionStatus: paymentEntity.transactionStatus !== undefined ? paymentEntity.transactionStatus : undefined,
+        bankId: paymentEntity.bankId,
+        cardId: paymentEntity.cardId,
+        creditLapses: paymentEntity.creditLapses !== undefined ? paymentEntity.creditLapses : undefined,
+        description: paymentEntity.description,
+        email: paymentEntity.email,
+        franchise: <CardFranchiseEnum>paymentEntity.franchise,
+        location: <PaymentLocationEnum>paymentEntity.location,
+        name: paymentEntity.name,
+        ownerId: paymentEntity.ownerId,
+        total: paymentEntity.total,
+        type: <CardTypeEnum>paymentEntity.type,
+        updateDate: paymentEntity.updateDate,
+        createDate: paymentEntity.createDate,
+        deleteDate: paymentEntity.deleteDate,
     }
 }

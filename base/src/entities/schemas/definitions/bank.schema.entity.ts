@@ -1,6 +1,7 @@
 import Joi from "joi";
 import {CardFranchiseEnum, CardTypeEnum} from "../../models/card.model.entity";
 import {TransactionStatusEnum} from "../../models/transaction.entity";
+import {PaymentLocationEnum} from "../../models/payment.model.entity";
 
 export const BankCreateInputSchema = Joi.object({
     name: Joi.string().min(1).required().description("bank name"),
@@ -60,3 +61,26 @@ export const TransactionUpdateInputSchema = Joi.object({
 }).meta({
     className: "TransactionUpdateInput"
 });
+
+
+export const PaymentCreateInputSchema = Joi.object({
+    name: Joi.string().min(1).description("owner name").required(),
+    email: Joi.string().min(1).description("owner email").required(),
+    ownerId: Joi.number().required().min(1).positive(),
+    description: Joi.string().min(1).description("payment concept").required(),
+    location: Joi.string().valid(...Object.values(PaymentLocationEnum)).required(),
+    total: Joi.number().required().min(1),
+    bankId: Joi.number().required().positive().min(1),
+    cardId: Joi.number().required().positive().min(1),
+    franchise: Joi.string().valid(...Object.values(CardFranchiseEnum)).required(),
+    type: Joi.string().valid(...Object.values(CardTypeEnum)).required(),
+    creditLapses: Joi.number().positive().min(1),
+}).meta({
+    className: "PaymentCreateInput"
+})
+
+export const PaymentUpdateInputSchema = Joi.object({
+    transactionStatus: Joi.string().valid(...Object.values(TransactionStatusEnum))
+}).meta({
+    className: "PaymentUpdateInput"
+})
