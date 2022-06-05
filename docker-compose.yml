@@ -1,7 +1,7 @@
 version: '3.3'
 
 services:
-    payment_gateway:
+    payment:
         image: payment
         #ports:
             #-   3500:5000
@@ -25,7 +25,7 @@ services:
         volumes:
             -   ./conf.d:/etc/nginx/conf.d
         depends_on:
-            -   api
+            -   payment
         ports:
             -   '8080:8080'
 
