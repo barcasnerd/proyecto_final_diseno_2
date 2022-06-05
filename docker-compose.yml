@@ -3,18 +3,18 @@ version: '3.3'
 services:
     payment:
         image: payment
-        #ports:
-            #-   3500:5000
+          #ports:
+        #-   3500:5000
         env_file:
-            -   environmentVars/payment.env
+            - environmentVars/payment.env
         depends_on:
-            -   postgres
+            - postgres
 
     base:
         image: base
-#       container_name: base
-#        ports:
-#            -   "5000:5000"
+        #       container_name: base
+        #        ports:
+        #            -   "5000:5000"
         env_file:
             - environmentVars/base.env
         depends_on:
@@ -23,16 +23,18 @@ services:
     nginx:
         image: nginx:latest
         volumes:
-            -   ./conf.d:/etc/nginx/conf.d
+            - ./conf.d:/etc/nginx/conf.d
         depends_on:
-            -   payment
+            - payment
         ports:
-            -   '8080:8080'
+            - '8080:8080'
 
     postgres:
         image: postgres
         restart: always
         container_name: postgres
+        volumes:
+            - /postgres-data:/var/lib/postgresql
         ports:
             - "5432:5432"
         environment:
@@ -52,3 +54,15 @@ services:
             - ./portainer-data:/data
         ports:
             - 9000:9000
+
+    pgadmin:
+        container_name: pgadmin4_container
+        image: dpage/pgadmin4
+        restart: always
+        volumes:
+            - /pgadmin-data:/var/lib/postgresql
+        environment:
+            PGADMIN_DEFAULT_EMAIL: admin@admin.com
+            PGADMIN_DEFAULT_PASSWORD: root
+        ports:
+            - "5050:80"
