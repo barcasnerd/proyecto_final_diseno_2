@@ -16,6 +16,12 @@ export class BankEntity {
     @Column({type: "varchar", nullable: false})
     name: string;
 
+    @Column({type: "boolean", nullable: false, default: true})
+    isBalanceServiceActive!: boolean;
+
+    @Column({type: "boolean", nullable: false, default: true})
+    isPaymentServiceActive!: boolean;
+
     @CreateDateColumn()
     createDate!: Date;
 

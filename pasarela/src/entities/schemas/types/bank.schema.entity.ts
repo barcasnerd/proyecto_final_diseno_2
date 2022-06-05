@@ -12,6 +12,14 @@ export interface BankCreateInput {
 
 export interface BankUpdateInput {
   /**
+   * bank balance service status
+   */
+  isBalanceServiceActive?: boolean;
+  /**
+   * bank payment service status
+   */
+  isPaymentServiceActive?: boolean;
+  /**
    * bank name
    */
   name?: string;

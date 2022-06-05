@@ -65,6 +65,12 @@ export class BankRepository extends GeneralRepository implements IBankRepository
         if (input.name !== undefined) {
             bank.name = input.name;
         }
+        if (input.isBalanceServiceActive !== undefined) {
+            bank.isBalanceServiceActive = input.isBalanceServiceActive
+        }
+        if (input.isPaymentServiceActive !== undefined) {
+            bank.isPaymentServiceActive = input.isPaymentServiceActive
+        }
         if (transactionManager) {
             await transactionManager.save(bank);
         } else {
