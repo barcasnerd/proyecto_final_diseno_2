@@ -12,9 +12,9 @@ services:
 
     base:
         image: base
-        container_name: base
-        ports:
-            -   "5000:5000"
+#       container_name: base
+#        ports:
+#            -   "5000:5000"
         env_file:
             - environmentVars/base.env
         depends_on:
