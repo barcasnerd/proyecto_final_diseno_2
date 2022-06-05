@@ -38,6 +38,9 @@ export class CardUseCase implements ICardUseCase {
         if (card == undefined) {
             throw new Error("card not found")
         }
+        if (card.bank.isBalanceServiceActive !== true) {
+            throw new Error("balance service not available")
+        }
         return await this.cardRepository.getBalance(id);
     }
 
