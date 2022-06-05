@@ -102,6 +102,9 @@ export class CardController implements Controller {
         } else if (errorMessage.includes("duplicate key value violates")) {
             code = 400;
             errorMessage = "bank with same name already exist"
+        }else if (errorMessage.includes("balance service not available")) {
+            code = 503;
+            errorMessage = "balance service not available"
         } else if (error._status === 401) {
             code = 401;
             errorMessage = error._rawErrorMessage
