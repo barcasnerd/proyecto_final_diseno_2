@@ -1,0 +1,9 @@
+node_modules
+node_modules/
+build
+.idea
+/coverage
+GLOBAL - Social_Network Service.iml
+Juridigo-MS_Social_Network.iml
+dist/
+.env.yaml
