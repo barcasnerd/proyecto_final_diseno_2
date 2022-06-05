@@ -46,6 +46,7 @@ export class PaymentRepository extends GeneralRepository implements IPaymentRepo
         if (input.transactionStatus !== undefined) {
             pa.transactionStatus = <TransactionStatusEnum>input.transactionStatus;
         }
+        if (input.completed !== undefined) pa.isCompleteAndApproved = input.completed;
         if (transactionManager) {
             await transactionManager.save(pa);
         } else {

@@ -67,6 +67,7 @@ export function paymentEntityToDomainPayment(paymentEntity: PaymentEntity): Paym
         ownerId: paymentEntity.ownerId,
         total: paymentEntity.total,
         type: <CardTypeEnum>paymentEntity.type,
+        isCompleteAndApproved: paymentEntity.isCompleteAndApproved !== undefined ? paymentEntity.isCompleteAndApproved : undefined,
         updateDate: paymentEntity.updateDate,
         createDate: paymentEntity.createDate,
         deleteDate: paymentEntity.deleteDate,

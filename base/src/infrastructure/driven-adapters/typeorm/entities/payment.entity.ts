@@ -44,6 +44,9 @@ export class PaymentEntity {
     @Column({type: "varchar", nullable: true, default: `${TransactionStatusEnum.REJECTED}`})
     transactionStatus?: TransactionStatusEnum;
 
+    @Column({type: "boolean", nullable: true, default: false})
+    isCompleteAndApproved?: boolean
+
     @CreateDateColumn()
     createDate!: Date;
 

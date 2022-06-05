@@ -80,7 +80,8 @@ export const PaymentCreateInputSchema = Joi.object({
 })
 
 export const PaymentUpdateInputSchema = Joi.object({
-    transactionStatus: Joi.string().valid(...Object.values(TransactionStatusEnum))
+    transactionStatus: Joi.string().valid(...Object.values(TransactionStatusEnum)),
+    completed: Joi.boolean()
 }).meta({
     className: "PaymentUpdateInput"
 })

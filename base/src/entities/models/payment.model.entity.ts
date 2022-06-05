@@ -23,6 +23,7 @@ export interface Payment {
     type: CardTypeEnum;
     creditLapses?: number;
     transactionStatus?: TransactionStatusEnum;
+    isCompleteAndApproved?: boolean;
     createDate: Date;
     updateDate: Date;
     deleteDate: Date;

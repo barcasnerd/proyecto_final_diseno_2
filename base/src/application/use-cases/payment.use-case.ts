@@ -42,6 +42,7 @@ export class PaymentUseCase implements IPaymentUseCase {
                     total: payment.total,
                     type: payment.type
                 }
+                console.log("Sending transaction to payment gateway via HTTP connector...")
                 let paymentGatewayRequest = await axios.post(url, data);
                 if (paymentGatewayRequest.data.data.status === TransactionStatusEnum.APPROVED) {
                     payment = await this.paymentRepository.update(payment.id, {transactionStatus: TransactionStatusEnum.APPROVED}, transactionManager);
