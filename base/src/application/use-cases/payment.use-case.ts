@@ -4,10 +4,14 @@ import {PaymentCreateInput, PaymentUpdateInput, TransactionCreateInput} from "..
 import {Payment} from "../../entities/models/payment.model.entity";
 import {InputType} from "../../common/input/common";
 import {ValidationResult} from "joi";
-import {PaymentCreateInputSchema} from "../../entities/schemas/definitions/bank.schema.entity";
+import {
+    PaymentCreateInputSchema,
+    PaymentUpdateInputSchema
+} from "../../entities/schemas/definitions/bank.schema.entity";
 import axios from "axios";
 import {APP_VARIABLES} from "../../common/helpers/initial.config";
 import {CardTypeEnum} from "../../entities/models/card.model.entity";
+import {TransactionStatusEnum} from "../../entities/models/transaction.entity";
 
 export class PaymentUseCase implements IPaymentUseCase {
 
@@ -22,7 +26,7 @@ export class PaymentUseCase implements IPaymentUseCase {
         // input validation
         this.validateInput(input, InputType.CREATE);
         // save payment
-        let payment: Payment;
+        let payment: Payment | undefined;
         const operationTransaction = async (manager: any) => {
             payment = await this.paymentRepository.create(input, manager);
             // TODO: call payment service to create transaction
@@ -39,7 +43,9 @@ export class PaymentUseCase implements IPaymentUseCase {
                     type: payment.type
                 }
                 let paymentGatewayRequest = await axios.post(url, data);
-                console.log(paymentGatewayRequest.data);
+                if (paymentGatewayRequest.data.data.status === TransactionStatusEnum.APPROVED) {
+                    payment = await this.paymentRepository.update(payment.id, {transactionStatus: TransactionStatusEnum.APPROVED}, transactionManager);
+                }
             } catch (error: any) {
                 console.log(error.message);
             }
@@ -84,7 +90,7 @@ export class PaymentUseCase implements IPaymentUseCase {
         if (type === InputType.CREATE) {
             result = PaymentCreateInputSchema.validate(input);
         } else if (type === InputType.UPDATE) {
-            result = PaymentCreateInputSchema.validate(input);
+            result = PaymentUpdateInputSchema.validate(input);
         } else {
             throw new Error("invalid validation type");
         }
