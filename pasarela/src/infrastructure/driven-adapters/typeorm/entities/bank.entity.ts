@@ -13,7 +13,7 @@ export class BankEntity {
     @PrimaryGeneratedColumn()
     id!: number;
 
-    @Column({type: "varchar", nullable: false, unique: true})
+    @Column({type: "varchar", nullable: false})
     name: string;
 
     @CreateDateColumn()
