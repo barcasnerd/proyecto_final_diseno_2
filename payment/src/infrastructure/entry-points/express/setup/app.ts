@@ -9,7 +9,7 @@ const App = ()=>{
     expressApp.use(helmet());
     expressApp.use(cors());
     expressApp.use(json());
-    expressApp.use('/api/v1', routes());
+    expressApp.use('/api/v1/payment', routes());
     return expressApp;
 }
 
