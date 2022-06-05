@@ -8,6 +8,8 @@ import {InputType} from "../../common/input/common";
 import {ValidationResult} from "joi";
 import {TransactionCreateInputSchema} from "../../entities/schemas/definitions/bank.schema.entity";
 import {CardTypeEnum} from "../../entities/models/card.model.entity";
+import {APP_VARIABLES} from "../../common/helpers/initial.config";
+import axios from "axios";
 
 export class TransactionUseCase implements ITransactionUseCase {
 
@@ -75,7 +77,20 @@ export class TransactionUseCase implements ITransactionUseCase {
             }
         }
         // TODO: Send transaction status for the payment base application connector
-        console.log("sending transaction via HTTP connector...")
+        try {
+            if (transaction!.status === TransactionStatusEnum.APPROVED) {
+                const url = `${APP_VARIABLES.PING}/${transaction!.reference}`;
+                let data = {
+                    transactionStatus: "APPROVED",
+                    completed: true
+                }
+                console.log("Sending transaction results via HTTP connector...")
+                console.log(url)
+                let baseRequest = await axios.patch(url, data);
+            }
+        } catch (e) {
+            console.log(e.message);
+        }
         return transaction!;
     }
 

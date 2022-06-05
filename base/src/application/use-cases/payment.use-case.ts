@@ -30,32 +30,36 @@ export class PaymentUseCase implements IPaymentUseCase {
         const operationTransaction = async (manager: any) => {
             payment = await this.paymentRepository.create(input, manager);
             // TODO: call payment service to create transaction
-            try {
-                const url = `${APP_VARIABLES.PING}`
-                let data: TransactionCreateInput = {
-                    bankId: payment.bankId,
-                    cardId: payment.cardId,
-                    creditLapses: (payment.creditLapses !== undefined && payment.type === CardTypeEnum.CREDIT) ? payment.creditLapses : undefined,
-                    franchise: payment.franchise,
-                    ownerId: payment.ownerId,
-                    reference: payment.id,
-                    total: payment.total,
-                    type: payment.type
-                }
-                console.log("Sending transaction to payment gateway via HTTP connector...")
-                let paymentGatewayRequest = await axios.post(url, data);
-                if (paymentGatewayRequest.data.data.status === TransactionStatusEnum.APPROVED) {
-                    payment = await this.paymentRepository.update(payment.id, {transactionStatus: TransactionStatusEnum.APPROVED}, transactionManager);
-                }
-            } catch (error: any) {
-                console.log(error.message);
-            }
+
         }
         if (transactionManager) {
             await operationTransaction(transactionManager);
         } else {
             await this.paymentRepository.transaction(operationTransaction);
         }
+
+        try {
+            payment = payment!
+            const url = `${APP_VARIABLES.PING}`
+            let data: TransactionCreateInput = {
+                bankId: payment.bankId,
+                cardId: payment.cardId,
+                creditLapses: (payment.creditLapses !== undefined && payment.type === CardTypeEnum.CREDIT) ? payment.creditLapses : undefined,
+                franchise: payment.franchise,
+                ownerId: payment.ownerId,
+                reference: payment.id,
+                total: payment.total,
+                type: payment.type
+            }
+            console.log("Sending transaction to payment gateway via HTTP connector...")
+            let paymentGatewayRequest = await axios.post(url, data);
+            if (paymentGatewayRequest.data.data.status === TransactionStatusEnum.APPROVED) {
+                payment = await this.paymentRepository.update(payment.id, {transactionStatus: TransactionStatusEnum.APPROVED}, transactionManager);
+            }
+        } catch (error: any) {
+            console.log(error.message);
+        }
+
         return payment!;
     }
 
