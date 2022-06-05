@@ -34,20 +34,20 @@ async function types(): Promise<void> {
         console.log("Generating OAPI from JOI Schemas");
         files = [];
         iterateFolder("./src/entities/schemas/definitions")
-        fs.rmdirSync("generated-oapi/schemas", { recursive: true });
-        for(const file of files){
-            const fileContent = require(__dirname+"/../"+file)
-            for(const key of Object.keys(fileContent)){
-                const result = convert(fileContent[key], './test.json');
-                const newPath = "generated-oapi/schemas/"+ file.replace("src\\entities\\schemas\\", "").replace(".ts", "");
-                const filePath = newPath + "." + key + ".yaml";
-                fs.mkdirSync(Path.dirname(filePath), { recursive: true });
-                fs.writeFileSync(
-                    filePath,
-                    YAML.stringify({title: key, ...result})
-                );
-            }
-        }
+        // fs.rmdirSync("generated-oapi/schemas", { recursive: true });
+        // for(const file of files){
+        //     const fileContent = require(__dirname+"/../"+file)
+        //     for(const key of Object.keys(fileContent)){
+        //         const result = convert(fileContent[key], './test.json');
+        //         const newPath = "generated-oapi/schemas/"+ file.replace("src\\entities\\schemas\\", "").replace(".ts", "");
+        //         const filePath = newPath + "." + key + ".yaml";
+        //         fs.mkdirSync(Path.dirname(filePath), { recursive: true });
+        //         fs.writeFileSync(
+        //             filePath,
+        //             YAML.stringify({title: key, ...result})
+        //         );
+        //     }
+        // }
     }catch (e) {
         console.error(e);
     }
@@ -62,42 +62,42 @@ async function types(): Promise<void> {
             simplify: false,
             shortcut: false
         } );
-        fs.rmdirSync("generated-oapi/models", { recursive: true });
-        for(const file of files){
-            const dirPath = file.split("\\")
-            dirPath.pop()
-            const paramsInput = { filename: file,cwd: __dirname +"/../" + dirPath.join("\\")  };
-            const data = JSON.parse((await convert( paramsInput )).data);
-            const iterate = (obj: any, stack: string) => {
-                for (const property in obj) {
-                    if (obj.hasOwnProperty(property)) {
-                        const value = obj[property];
-                        if (typeof value == "object") {
-                            iterate(value, stack + '.' + property);
-                        } else {
-                            if(typeof value === "string"){
-                                if(value.includes("/Date")){
-                                    delete obj["$ref"];
-                                    obj.type = "string";
-                                    obj.format = "date-time";
-                                }
-                                if(value.includes(".")){
-                                    delete obj.title;
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-            iterate(data, "");
-            //
-            const filePath = "generated-oapi/models/"+ file.replace(".ts", ".yaml").replace("src\\entities\\models\\", "");
-            fs.mkdirSync(Path.dirname(filePath), { recursive: true });
-            fs.writeFileSync(
-                filePath,
-                YAML.stringify(data)
-            );
-        }
+        // fs.rmdirSync("generated-oapi/models", { recursive: true });
+        // for(const file of files){
+        //     const dirPath = file.split("\\")
+        //     dirPath.pop()
+        //     const paramsInput = { filename: file,cwd: __dirname +"/../" + dirPath.join("\\")  };
+        //     const data = JSON.parse((await convert( paramsInput )).data);
+        //     const iterate = (obj: any, stack: string) => {
+        //         for (const property in obj) {
+        //             if (obj.hasOwnProperty(property)) {
+        //                 const value = obj[property];
+        //                 if (typeof value == "object") {
+        //                     iterate(value, stack + '.' + property);
+        //                 } else {
+        //                     if(typeof value === "string"){
+        //                         if(value.includes("/Date")){
+        //                             delete obj["$ref"];
+        //                             obj.type = "string";
+        //                             obj.format = "date-time";
+        //                         }
+        //                         if(value.includes(".")){
+        //                             delete obj.title;
+        //                         }
+        //                     }
+        //                 }
+        //             }
+        //         }
+        //     }
+        //     iterate(data, "");
+        //     //
+        //     const filePath = "generated-oapi/models/"+ file.replace(".ts", ".yaml").replace("src\\entities\\models\\", "");
+        //     fs.mkdirSync(Path.dirname(filePath), { recursive: true });
+        //     fs.writeFileSync(
+        //         filePath,
+        //         YAML.stringify(data)
+        //     );
+        // }
     }catch (e) {
         console.error(e);
     }
