@@ -24,3 +24,16 @@ export interface BankUpdateInput {
    */
   name?: string;
 }
+
+export interface CardCreateInput {
+  balance: number;
+  bankId: number;
+  franchise: 'VISA' | 'MASTERCARD' | 'AMERICAN EXPRESS';
+  ownerId: number;
+  type: 'CREDIT' | 'DEBIT';
+}
+
+export interface CardUpdateInput {
+  active?: boolean;
+  balance?: number;
+}

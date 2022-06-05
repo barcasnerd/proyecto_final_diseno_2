@@ -2,11 +2,12 @@ import {
     Column,
     CreateDateColumn,
     DeleteDateColumn,
-    Entity,
+    Entity, OneToMany,
     PrimaryColumn,
     PrimaryGeneratedColumn,
     UpdateDateColumn
 } from "typeorm";
+import {CardEntity} from "./card.entity";
 
 @Entity()
 export class BankEntity {
@@ -21,6 +22,9 @@ export class BankEntity {
 
     @Column({type: "boolean", nullable: false, default: true})
     isPaymentServiceActive!: boolean;
+
+    @OneToMany(() => CardEntity, card => card.bank)
+    cards!: CardEntity[]
 
     @CreateDateColumn()
     createDate!: Date;
