@@ -37,3 +37,23 @@ export interface CardUpdateInput {
   active?: boolean;
   balance?: number;
 }
+
+export interface TransactionCreateInput {
+  bankId: number;
+  cardId: number;
+  creditLapses?: number;
+  franchise: 'VISA' | 'MASTERCARD' | 'AMERICAN EXPRESS';
+  ownerId: number;
+  reference: number;
+  total: number;
+  type: 'CREDIT' | 'DEBIT';
+}
+
+export interface TransactionFailedCreateInput {
+  reason: string;
+  status: 'APPROVED' | 'REJECTED';
+}
+
+export interface TransactionUpdateInput {
+  pendingToSend?: boolean;
+}

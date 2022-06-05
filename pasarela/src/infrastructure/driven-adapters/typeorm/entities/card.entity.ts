@@ -3,13 +3,14 @@ import {
     CreateDateColumn,
     DeleteDateColumn,
     Entity,
-    ManyToOne,
+    ManyToOne, OneToMany,
     PrimaryGeneratedColumn,
     UpdateDateColumn
 } from "typeorm";
 import {Bank} from "../../../../entities/models/bank.model.entity";
 import {CardFranchiseEnum, CardTypeEnum} from "../../../../entities/models/card.model.entity";
 import {BankEntity} from "./bank.entity";
+import {TransactionEntity} from "./transaction.entity";
 
 
 @Entity()
@@ -36,6 +37,9 @@ export class CardEntity {
 
     @Column({type: "boolean", nullable: false, default: true})
     active!: boolean;
+
+    @OneToMany(() => TransactionEntity, transaction => transaction.card)
+    transactions!: TransactionEntity[]
 
     @CreateDateColumn()
     createDate!: Date;

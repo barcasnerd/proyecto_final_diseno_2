@@ -8,6 +8,7 @@ import {
     UpdateDateColumn
 } from "typeorm";
 import {CardEntity} from "./card.entity";
+import {TransactionEntity} from "./transaction.entity";
 
 @Entity()
 export class BankEntity {
@@ -25,6 +26,9 @@ export class BankEntity {
 
     @OneToMany(() => CardEntity, card => card.bank)
     cards!: CardEntity[]
+
+    @OneToMany(() => TransactionEntity, transaction => transaction.bank)
+    transactions!: TransactionEntity[]
 
     @CreateDateColumn()
     createDate!: Date;
