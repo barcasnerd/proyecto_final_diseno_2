@@ -1,0 +1,54 @@
+version: '3.3'
+
+services:
+    payment:
+        image: payment
+        #ports:
+            #-   3500:5000
+        env_file:
+            -   environmentVars/payment.env
+        depends_on:
+            -   postgres
+
+    base:
+        image: base
+#       container_name: base
+#        ports:
+#            -   "5000:5000"
+        env_file:
+            - environmentVars/base.env
+        depends_on:
+            - postgres
+
+    nginx:
+        image: nginx:latest
+        volumes:
+            -   ./conf.d:/etc/nginx/conf.d
+        depends_on:
+            -   payment
+        ports:
+            -   '8080:8080'
+
+    postgres:
+        image: postgres
+        restart: always
+        container_name: postgres
+        ports:
+            - "5432:5432"
+        environment:
+            - POSTGRES_USER=root
+            - POSTGRES_PASSWORD=root
+            - POSTGRES_DB=root
+
+    portainer:
+        image: portainer/portainer-ce:latest
+        container_name: portainer
+        restart: unless-stopped
+        security_opt:
+            - no-new-privileges:true
+        volumes:
+            - /etc/localtime:/etc/localtime:ro
+            - /var/run/docker.sock:/var/run/docker.sock:ro
+            - ./portainer-data:/data
+        ports:
+            - 9000:9000
