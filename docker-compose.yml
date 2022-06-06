@@ -1,6 +1,12 @@
 version: '3.3'
 
 services:
+
+    front:
+        image: front
+        depends_on:
+            -   base
+
     payment:
         image: payment
           #ports:
